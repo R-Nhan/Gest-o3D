@@ -1,13 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
-    <title>Login</title>
+<meta charset="UTF-8">
+<title>Login</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
 
-    <h1>Login</h1>
+<div class="login-box">
+
+    <div class="logo">
+        <img src="{% static 'logo.jpg' %}" alt="Logo da empresa" width="240" height="160">
+    </div>
 
     <form method="post">
 
@@ -20,6 +27,8 @@
         </button>
 
     </form>
+
+</div>
 
 </body>
 
