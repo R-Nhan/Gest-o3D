@@ -1,6 +1,4 @@
-/* =========================================================
-   RESET
-========================================================= */
+/* RESET */
 
 * {
     box-sizing: border-box;
@@ -27,9 +25,7 @@ body {
 }
 
 
-/* =========================================================
-   SIDEBAR
-========================================================= */
+/* SIDEBAR */
 
 .sidebar {
     position: fixed;
@@ -55,6 +51,66 @@ body {
     overflow-x: hidden;
 
     z-index: 1000;
+
+    transition: width 0.25s ease;
+}
+
+.sidebar.collapsed {
+    width: 76px;
+
+    padding: 0 10px;
+}
+
+.sidebar-header {
+    min-height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 8px;
+}
+
+.sidebar-brand {
+    color: #f5f5f5;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.sidebar-toggle {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #858792;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.sidebar-toggle:hover {
+    background: #222328;
+    color: #ffffff;
+}
+
+.sidebar.collapsed .sidebar-header {
+    justify-content: center;
+    padding: 0;
+}
+
+.sidebar.collapsed .sidebar-brand,
+.sidebar.collapsed .sidebar-label,
+.sidebar.collapsed .section-label,
+.sidebar.collapsed .section-arrow,
+.sidebar.collapsed .unit-info,
+.sidebar.collapsed .sidebar-footer {
+    display: none;
 }
 
 
@@ -122,6 +178,11 @@ body {
 
 .unit-selector:hover {
     background: #222328;
+}
+
+.sidebar.collapsed .unit-selector {
+    justify-content: center;
+    padding: 0;
 }
 
 .unit-icon {
@@ -202,6 +263,11 @@ body {
     text-align: left;
 
     transition: color 0.2s ease;
+}
+
+.sidebar.collapsed .section-title {
+    justify-content: center;
+    padding: 0;
 }
 
 .section-title:hover {
@@ -290,6 +356,12 @@ body {
     transition:
         background 0.2s ease,
         color 0.2s ease;
+}
+
+.sidebar.collapsed .sidebar-item {
+    justify-content: center;
+    gap: 0;
+    padding: 0;
 }
 
 .sidebar-item:hover {
@@ -412,6 +484,12 @@ body {
     background: #090a0c;
 
     color: #ffffff;
+
+    transition: margin-left 0.25s ease;
+}
+
+.page-content.sidebar-collapsed {
+    margin-left: 76px;
 }
 
 

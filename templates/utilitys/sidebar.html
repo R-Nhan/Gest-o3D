@@ -12,11 +12,33 @@
 
 <body>
     <aside class="sidebar">
+
+        <div class="sidebar-header">
+            <span class="sidebar-brand">Toys Store 3D</span>
+
+            <button type="button" class="sidebar-toggle" aria-label="Recolher menu" aria-expanded="true" onclick="toggleSidebar()">
+                <span aria-hidden="true">☰</span>
+            </button>
+        </div>
+
+        <a href="{% url 'home' %}" class="sidebar-item{% if request.resolver_match.url_name == 'home' %} active{% endif %}">
+
+            <span class="item-icon">
+                ◴
+            </span>
+
+            <span class="sidebar-label">
+                Painel de Controle
+            </span>
+
+        </a>
+
+        <!-- Sessao 1 -->
         <div class="menu-section">
 
             <button type="button" class="section-title" onclick="toggleSection(this)">
 
-                <span>
+                <span class="section-label">
                     Filamento
                 </span>
 
@@ -29,52 +51,52 @@
 
             <div class="section-items">
 
-                <a href="{% url 'home' %}" class="sidebar-item{% if request.resolver_match.url_name == 'home' %} active{% endif %}">
+                <a href="{% url 'dashboard' %}" class="sidebar-item{% if request.resolver_match.url_name == 'dashboard' and request.path|slice:':9' == '/filamneto' %} active{% endif %}">
 
                     <span class="item-icon">
                         ▥
                     </span>
 
-                    <span>
+                    <span class="sidebar-label">
                         Dashboards
                     </span>
 
                 </a>
 
 
-                <a href="#" class="sidebar-item">
+                <a href="{% url 'fila' %}" class="sidebar-item{% if request.resolver_match.url_name == 'fila' and request.path|slice:':9' == '/filamneto' %} active{% endif %}">
 
                     <span class="item-icon">
                         ◎
                     </span>
 
-                    <span>
+                    <span class="sidebar-label">
                         Fila de Impressão
                     </span>
 
                 </a>
 
 
-                <a href="#" class="sidebar-item">
+                <a href="{% url 'vender' %}" class="sidebar-item{% if request.resolver_match.url_name == 'vender' and request.path|slice:':9' == '/filamneto' %} active{% endif %}">
 
                     <span class="item-icon">
                         R$
                     </span>
 
-                    <span>
+                    <span class="sidebar-label">
                         Vender
                     </span>
 
                 </a>
 
 
-                <a href="#" class="sidebar-item">
+                <a href="{% url 'concluido' %}" class="sidebar-item{% if request.resolver_match.url_name == 'concluido' and request.path|slice:':9' == '/filamneto' %} active{% endif %}">
 
                     <span class="item-icon">
                         ↻
                     </span>
 
-                    <span>
+                    <span class="sidebar-label">
                         Concluidos
                     </span>
 
@@ -84,16 +106,13 @@
 
         </div>
 
-
-        <!-- ==========================================
-         EVENTOS
-    =========================================== -->
+        <!-- Sessao 2 -->
 
         <div class="menu-section">
 
             <button type="button" class="section-title" onclick="toggleSection(this)">
 
-                <span>
+                <span class="section-label">
                     Resina
                 </span>
 
@@ -106,52 +125,52 @@
 
             <div class="section-items">
 
-                <a href="#" class="sidebar-item">
+                <a href="{% url 'resina:dashboard' %}" class="sidebar-item{% if request.resolver_match.url_name == 'dashboard' and request.path|slice:':7' == '/resina' %} active{% endif %}">
 
                     <span class="item-icon">
                         ▥
                     </span>
 
-                    <span>
+                    <span class="sidebar-label">
                         Dashboards
                     </span>
 
                 </a>
 
 
-                <a href="#" class="sidebar-item">
+                <a href="{% url 'resina:fila' %}" class="sidebar-item{% if request.resolver_match.url_name == 'fila' and request.path|slice:':7' == '/resina' %} active{% endif %}">
 
                     <span class="item-icon">
                         ◎
                     </span>
 
-                    <span>
+                    <span class="sidebar-label">
                         Fila de Impressão
                     </span>
 
                 </a>
 
 
-                <a href="#" class="sidebar-item">
+                <a href="{% url 'resina:vender' %}" class="sidebar-item{% if request.resolver_match.url_name == 'vender' and request.path|slice:':7' == '/resina' %} active{% endif %}">
 
                     <span class="item-icon">
                         R$
                     </span>
 
-                    <span>
+                    <span class="sidebar-label">
                         Vender
                     </span>
 
                 </a>
 
 
-                <a href="#" class="sidebar-item">
+                <a href="{% url 'resina:concluido' %}" class="sidebar-item{% if request.resolver_match.url_name == 'concluido' and request.path|slice:':7' == '/resina' %} active{% endif %}">
 
                     <span class="item-icon">
                         ↻
                     </span>
 
-                    <span>
+                    <span class="sidebar-label">
                         Concluidos
                     </span>
 
@@ -161,18 +180,46 @@
 
         </div>
 
-        <!-- ==========================================
-         RODAPÉ
-    =========================================== -->
+        <!-- RODAPÉ -->
 
         <div class="sidebar-footer">
 
-            Desenvolvido por Rubens Ian - 2026
+            <span class="sidebar-label">Desenvolvido por Rubens Ian - 2026</span>
 
         </div>
 
     </aside>
     <script>
+        function toggleSidebar() {
+
+            const sidebar = document.querySelector(".sidebar");
+            const pageContent = document.querySelector(".page-content");
+            const toggle = document.querySelector(".sidebar-toggle");
+            const isCollapsed = sidebar.classList.toggle("collapsed");
+
+            pageContent.classList.toggle("sidebar-collapsed", isCollapsed);
+            toggle.setAttribute("aria-expanded", String(!isCollapsed));
+            toggle.setAttribute("aria-label", isCollapsed ? "Expandir menu" : "Recolher menu");
+            localStorage.setItem("sidebar-collapsed", String(isCollapsed));
+
+        }
+
+        window.addEventListener("DOMContentLoaded", function () {
+
+            const sidebar = document.querySelector(".sidebar");
+            const pageContent = document.querySelector(".page-content");
+            const toggle = document.querySelector(".sidebar-toggle");
+            const savedSidebarState = localStorage.getItem("sidebar-collapsed") === "true";
+
+            if (savedSidebarState) {
+                sidebar.classList.add("collapsed");
+                pageContent.classList.add("sidebar-collapsed");
+                toggle.setAttribute("aria-expanded", "false");
+                toggle.setAttribute("aria-label", "Expandir menu");
+            }
+
+        });
+
         function toggleSection(button) {
 
             const section = button.closest(".menu-section");
