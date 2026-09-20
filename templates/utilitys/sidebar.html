@@ -1,0 +1,187 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/utilitys/sidebar.css' %}">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="menu-section">
+
+            <button type="button" class="section-title" onclick="toggleSection(this)">
+
+                <span>
+                    Filamento
+                </span>
+
+                <span class="section-arrow">
+                    ⌃
+                </span>
+
+            </button>
+
+
+            <div class="section-items">
+
+                <a href="{% url 'home' %}" class="sidebar-item{% if request.resolver_match.url_name == 'home' %} active{% endif %}">
+
+                    <span class="item-icon">
+                        ▥
+                    </span>
+
+                    <span>
+                        Dashboards
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="sidebar-item">
+
+                    <span class="item-icon">
+                        ◎
+                    </span>
+
+                    <span>
+                        Fila de Impressão
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="sidebar-item">
+
+                    <span class="item-icon">
+                        R$
+                    </span>
+
+                    <span>
+                        Vender
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="sidebar-item">
+
+                    <span class="item-icon">
+                        ↻
+                    </span>
+
+                    <span>
+                        Concluidos
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+         EVENTOS
+    =========================================== -->
+
+        <div class="menu-section">
+
+            <button type="button" class="section-title" onclick="toggleSection(this)">
+
+                <span>
+                    Resina
+                </span>
+
+                <span class="section-arrow">
+                    ⌃
+                </span>
+
+            </button>
+
+
+            <div class="section-items">
+
+                <a href="#" class="sidebar-item">
+
+                    <span class="item-icon">
+                        ▥
+                    </span>
+
+                    <span>
+                        Dashboards
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="sidebar-item">
+
+                    <span class="item-icon">
+                        ◎
+                    </span>
+
+                    <span>
+                        Fila de Impressão
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="sidebar-item">
+
+                    <span class="item-icon">
+                        R$
+                    </span>
+
+                    <span>
+                        Vender
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="sidebar-item">
+
+                    <span class="item-icon">
+                        ↻
+                    </span>
+
+                    <span>
+                        Concluidos
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- ==========================================
+         RODAPÉ
+    =========================================== -->
+
+        <div class="sidebar-footer">
+
+            Desenvolvido por Rubens Ian - 2026
+
+        </div>
+
+    </aside>
+    <script>
+        function toggleSection(button) {
+
+            const section = button.closest(".menu-section");
+
+            section.classList.toggle("collapsed");
+
+        }
+
+    </script>
+</body>
+
+</html>
