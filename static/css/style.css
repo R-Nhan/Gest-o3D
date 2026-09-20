@@ -13,21 +13,21 @@ body {
 }
 
 .login-box {
-    width: 0;
-    height: 0;
+    width: min(360px, calc(100vw - 32px));
+    padding: 28px 32px 32px;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
 }
 
 .logo {
-    position: fixed;
-    left: 50%;
-    top: 8%;
+    position: static;
     display: flex;
     justify-content: center;
     color: #ffffff;
     font-size: 22px;
     font-weight: 600;
     letter-spacing: 0.02em;
-    transform: translateX(-50%);
+    margin-bottom: 20px;
 }
 
 .logo img {
@@ -38,11 +38,7 @@ body {
 }
 
 form {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: min(256px, calc(100vw - 64px));
-    transform: translate(-50%, -50%);
+    width: 100%;
 }
 
 form p {
