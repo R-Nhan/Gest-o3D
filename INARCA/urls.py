@@ -7,6 +7,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path("", views.home, name="home"),
-    path('filamneto/', include('gestaofilamento.urls')),
+    path('filamento/', include('gestaofilamento.urls')),
     path('resina/', include('gestaoresina.urls')),
 ]
