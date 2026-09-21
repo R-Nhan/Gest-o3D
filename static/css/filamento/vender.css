@@ -1,0 +1,180 @@
+/* =========================================================
+   CALCULADORA
+========================================================= */
+
+.calculadora-custos {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.calculadora-descricao {
+    margin: 0 0 18px !important;
+    color: #9698a2;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   CAMPOS
+========================================================= */
+
+.calculadora-campos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.campo label {
+    color: #9698a2;
+    font-size: 12px;
+}
+
+.campo input {
+    width: 100%;
+    height: 38px;
+
+    padding: 0 10px;
+
+    background: #090a0c;
+    border: 1px solid #ffffff;
+    border-radius: 6px;
+
+    color: #ffffff;
+    font-size: 13px;
+
+    outline: none;
+}
+
+.campo input::placeholder {
+    color: #777;
+}
+
+.campo input:focus {
+    border-color: #4094ff;
+}
+
+
+/* Remove as setinhas dos inputs */
+
+.campo input::-webkit-outer-spin-button,
+.campo input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.campo input[type=number] {
+    -moz-appearance: textfield;
+}
+
+
+/* =========================================================
+   RESULTADOS
+========================================================= */
+
+.resultados {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+
+    margin-top: 18px;
+
+    border-top: 1px solid #292a2f;
+    border-bottom: 1px solid #292a2f;
+}
+
+.resultado {
+    min-width: 0;
+
+    padding: 12px 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    border-right: 1px solid #292a2f;
+}
+
+.resultado:last-child {
+    border-right: none;
+}
+
+.resultado span {
+    color: #9698a2;
+    font-size: 11px;
+}
+
+.resultado strong {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   VALOR SUGERIDO
+========================================================= */
+
+.valor-sugerido {
+    margin-top: 18px;
+
+    padding: 14px 18px;
+
+    background: #090a0c;
+    border: 1px solid #ffffff;
+    border-radius: 7px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.valor-sugerido span {
+    color: #9698a2;
+    font-size: 13px;
+}
+
+.valor-sugerido strong {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .calculadora-campos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .resultados {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .resultado {
+        border-right: none;
+        border-bottom: 1px solid #292a2f;
+    }
+
+}
+
+@media (max-width: 450px) {
+
+    .calculadora-campos {
+        grid-template-columns: 1fr;
+    }
+
+    .resultados {
+        grid-template-columns: 1fr;
+    }
+
+}
