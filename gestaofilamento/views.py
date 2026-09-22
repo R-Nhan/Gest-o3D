@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from .forms import VendaForm
 
 
 @login_required
@@ -15,7 +16,8 @@ def fila(request):
 
 @login_required
 def vender(request):
-    return render(request, 'filamento/vender.html')
+    form = VendaForm()
+    return render(request, 'filamento/vender.html', {'form': form})
 
 
 @login_required
