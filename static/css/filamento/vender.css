@@ -1,3 +1,40 @@
+:root {
+    --fundo: #090a0c;
+    --superficie: #111318;
+    --borda: #292c33;
+    --texto: #f4f5f7;
+    --texto-suave: #9698a2;
+    --destaque: #4094ff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   CABECALHO
+========================================================= */
+
+.pagina-cabecalho {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 28px;
+}
+
+.pagina-cabecalho h1 {
+    margin: 0;
+    color: var(--texto);
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.pagina-cabecalho p {
+    margin: 7px 0 0;
+    color: var(--texto-suave);
+    font-size: 13px;
+}
+
 /* =========================================================
    CALCULADORA
 ========================================================= */
@@ -6,11 +43,12 @@
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
+    padding: 24px;
 }
 
 .calculadora-descricao {
     margin: 0 0 18px !important;
-    color: #9698a2;
+    color: var(--texto-suave);
     font-size: 13px;
 }
 
@@ -32,7 +70,7 @@
 }
 
 .campo label {
-    color: #9698a2;
+    color: var(--texto-suave);
     font-size: 12px;
 }
 
@@ -42,11 +80,11 @@
 
     padding: 0 10px;
 
-    background: #090a0c;
+    background: var(--superficie);
     border: 1px solid #ffffff;
     border-radius: 6px;
 
-    color: #ffffff;
+    color: var(--texto);
     font-size: 13px;
 
     outline: none;
@@ -57,7 +95,7 @@
 }
 
 .campo input:focus {
-    border-color: #4094ff;
+    border-color: var(--destaque);
 }
 
 
@@ -105,12 +143,12 @@
 }
 
 .resultado span {
-    color: #9698a2;
+    color: var(--texto-suave);
     font-size: 11px;
 }
 
 .resultado strong {
-    color: #ffffff;
+    color: var(--texto);
     font-size: 14px;
     font-weight: 500;
 }
@@ -125,7 +163,7 @@
 
     padding: 14px 18px;
 
-    background: #090a0c;
+    background: var(--superficie);
     border: 1px solid #ffffff;
     border-radius: 7px;
 
@@ -135,14 +173,144 @@
 }
 
 .valor-sugerido span {
-    color: #9698a2;
+    color: var(--texto-suave);
     font-size: 13px;
 }
 
 .valor-sugerido strong {
-    color: #ffffff;
+    color: var(--texto);
     font-size: 22px;
     font-weight: 700;
+}
+
+.calculadora-form-separador {
+    width: 100%;
+    max-width: 1000px;
+    margin: 28px auto 0;
+    border-top: 1px solid #292a2f;
+}
+
+/* =========================================================
+   FORMULARIO
+========================================================= */
+
+.informar-venda-titulo {
+    width: 100%;
+    max-width: 1000px;
+    margin: 22px auto 0;
+    color: var(--texto);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.venda-form {
+    width: 100%;
+    max-width: 1000px;
+    margin: 18px auto 0;
+}
+
+.venda-form-campos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.venda-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.venda-campo-observacao {
+    grid-column: 1 / -1;
+}
+
+.venda-campo-valor {
+    grid-column: 1 / -1;
+    padding-top: 14px;
+    border-top: 1px solid #292a2f;
+}
+
+.campo-com-unidade {
+    position: relative;
+}
+
+.campo-com-unidade input {
+    padding-right: 34px;
+}
+
+.campo-com-unidade span {
+    position: absolute;
+    top: 50%;
+    right: 11px;
+    transform: translateY(-50%);
+    color: var(--texto-suave);
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.venda-form p {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    align-items: center;
+    gap: 18px;
+    margin: 0 0 14px;
+}
+
+.venda-form label {
+    color: var(--texto-suave);
+    font-size: 13px;
+}
+
+.venda-form input,
+.venda-form textarea,
+.venda-form select {
+    width: 100%;
+    padding: 10px 11px;
+    color: var(--texto);
+    background: var(--superficie);
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    outline: none;
+    font: inherit;
+    font-size: 13px;
+}
+
+.venda-form textarea {
+    min-height: 88px;
+    resize: vertical;
+}
+
+.venda-form input:focus,
+.venda-form textarea:focus,
+.venda-form select:focus {
+    border-color: var(--destaque);
+}
+
+.venda-form .helptext,
+.venda-form .helptext + ul,
+.venda-form .errorlist {
+    margin: 4px 0 0;
+    color: #d97979;
+    font-size: 12px;
+}
+
+.venda-form-botao {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 8px;
+    color: #000000;
+    background: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.venda-form-botao:hover {
+    background: #e5e5e5;
 }
 
 
@@ -169,12 +337,32 @@
 
 @media (max-width: 450px) {
 
+    .pagina-cabecalho h1 {
+        font-size: 22px;
+    }
+
+    .venda-form-campos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .venda-campo-observacao {
+        grid-column: 1 / -1;
+    }
+
     .calculadora-campos {
         grid-template-columns: 1fr;
     }
 
     .resultados {
         grid-template-columns: 1fr;
+    }
+
+    .venda-form-campos {
+        grid-template-columns: 1fr;
+    }
+
+    .venda-campo-observacao {
+        grid-column: auto;
     }
 
 }

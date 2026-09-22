@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .forms import VendaForm
@@ -16,7 +16,14 @@ def fila(request):
 
 @login_required
 def vender(request):
-    form = VendaForm()
+    if request.method == 'POST':
+        form = VendaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vender')
+    else:
+        form = VendaForm()
+
     return render(request, 'filamento/vender.html', {'form': form})
 
 

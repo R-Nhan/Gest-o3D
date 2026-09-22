@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vender</title>
+    <title>Registrar Venda</title>
     <link rel="stylesheet" href="{% static 'css/filamento/vender.css' %}">
 </head>
 
@@ -89,8 +89,42 @@
 
         </div>
 
-        <form>
-            {{ form }}
+        <div class="calculadora-form-separador"></div>
+
+        <h2 class="informar-venda-titulo">Registrar Venda</h2>
+
+        <form class="venda-form" method="post">
+            {% csrf_token %}
+
+            <div class="venda-form-campos">
+                {% for field in form %}
+                {% if field.name != 'valor_esperado' %}
+                <div class="venda-campo{% if field.name == 'observacao' %} venda-campo-observacao{% endif %}">
+                    {{ field.label_tag }}
+                    {% if field.name == 'peso' %}
+                    <div class="campo-com-unidade">
+                        {{ field }}
+                        <span>g</span>
+                    </div>
+                    {% else %}
+                    {{ field }}
+                    {% endif %}
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+                {% endfor %}
+
+                <div class="venda-campo venda-campo-valor">
+                    {{ form.valor_esperado.label_tag }}
+                    <div class="campo-com-unidade">
+                        {{ form.valor_esperado }}
+                        <span>R$</span>
+                    </div>
+                    {{ form.valor_esperado.errors }}
+                </div>
+            </div>
+
+            <button class="venda-form-botao" type="submit">Enviar</button>
         </form>
         
         <script>

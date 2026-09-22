@@ -34,6 +34,12 @@ class Venda(models.Model):
 
     quantidade = models.PositiveIntegerField(default=1)
 
+    peso = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0
+    )
+
     link = models.URLField(blank=True, null=True)
 
     tamanho = models.CharField(max_length=100, blank=True, null=True)
@@ -45,6 +51,12 @@ class Venda(models.Model):
     )
 
     valor = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0
+    )
+
+    valor_esperado = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         default=0
