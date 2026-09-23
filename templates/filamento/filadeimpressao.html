@@ -1,15 +1,84 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fila</title>
+    <link rel="stylesheet" href="{% static 'css/filamento/fila.css' %}">
 </head>
 <body>
     {% include "utilitys/sidebar.html" %}
     <main class="page-content">
         {% block content %}
-        <h1>Fila</h1>
+        <section class="fila-pagina">
+            <h1>Fila de Impressão</h1>
+
+            <section class="fila-secao">
+                <h2>Executando</h2>
+                <div class="fila-itens">
+                    {% for venda in vendas_executando %}
+                    <article class="fila-item">
+                        <div>
+                            <strong>{{ venda.produto }}</strong>
+                            <span>{{ venda.cliente }}</span>
+                            {% if venda.link %}
+                            <a class="fila-link-venda" href="{{ venda.link }}" target="_blank" rel="noopener noreferrer">
+                                Acessar venda
+                            </a>
+                            {% endif %}
+                            <details class="fila-observacao{% if venda.observacao %} fila-observacao-com-texto{% endif %}">
+                                <summary aria-label="Ver observação" title="Ver observação">&#9881;</summary>
+                                <p>{% if venda.observacao %}{{ venda.observacao }}{% else %}Sem observação.{% endif %}</p>
+                            </details>
+                        </div>
+                        <div class="fila-detalhes">
+                            <span>{{ venda.quantidade }} unidade{{ venda.quantidade|pluralize }}</span>
+                            <span>{{ venda.peso }} g</span>
+                        </div>
+                    </article>
+                    {% empty %}
+                    <p class="fila-vazia">Nenhuma impressão em execução.</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <div class="fila-separador"></div>
+
+            <section class="fila-secao">
+                <h2>Em Espera</h2>
+                <div class="fila-itens">
+                    {% for venda in vendas_em_espera %}
+                    <article class="fila-item">
+                        <div>
+                            <strong>{{ venda.produto }}</strong>
+                            <span>{{ venda.cliente }}</span>
+                            {% if venda.link %}
+                            <a class="fila-link-venda" href="{{ venda.link }}" target="_blank" rel="noopener noreferrer">
+                                Acessar venda
+                            </a>
+                            {% endif %}
+                            <details class="fila-observacao{% if venda.observacao %} fila-observacao-com-texto{% endif %}">
+                                <summary aria-label="Ver observação" title="Ver observação">&#9881;</summary>
+                                <p>{% if venda.observacao %}{{ venda.observacao }}{% else %}Sem observação.{% endif %}</p>
+                            </details>
+                        </div>
+                        <div class="fila-detalhes">
+                            <span>{{ venda.quantidade }} unidade{{ venda.quantidade|pluralize }}</span>
+                            <span>{{ venda.peso }} g</span>
+                        </div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="venda_id" value="{{ venda.id }}">
+                            <button type="submit">Executar</button>
+                        </form>
+                    </article>
+                    {% empty %}
+                    <p class="fila-vazia">Nenhuma venda aguardando impressão.</p>
+                    {% endfor %}
+                </div>
+            </section>
+        </section>
         {% endblock %}
     </main>
 </body>
