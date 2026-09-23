@@ -367,7 +367,7 @@ body {
 .sidebar-item:hover {
     background: #222328;
 
-    color: #ffffff;
+    color: #ff5500;
 }
 
 
@@ -378,13 +378,13 @@ body {
 .sidebar-item.active {
     background: #292a2f;
 
-    color: #4094ff;
+    color: #ff5500;
 }
 
 .sidebar-item.active:hover {
     background: #2d2e34;
 
-    color: #4094ff;
+    color: #ff5500;
 }
 
 
@@ -409,11 +409,11 @@ body {
 }
 
 .sidebar-item:hover .item-icon {
-    color: #c8c9cf;
+    color: #ff5500;
 }
 
 .sidebar-item.active .item-icon {
-    color: #4094ff;
+    color: #ff5500;
 }
 
 

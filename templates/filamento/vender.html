@@ -98,7 +98,7 @@
 
             <div class="venda-form-campos">
                 {% for field in form %}
-                {% if field.name != 'valor_esperado' %}
+                {% if field.name != 'custo' and field.name != 'valor_esperado' %}
                 <div class="venda-campo{% if field.name == 'observacao' %} venda-campo-observacao{% endif %}">
                     {{ field.label_tag }}
                     {% if field.name == 'peso' %}
@@ -114,13 +114,24 @@
                 {% endif %}
                 {% endfor %}
 
-                <div class="venda-campo venda-campo-valor">
-                    {{ form.valor_esperado.label_tag }}
-                    <div class="campo-com-unidade">
-                        {{ form.valor_esperado }}
-                        <span>R$</span>
+                <div class="venda-campo-valores">
+                    <div class="venda-campo">
+                        {{ form.custo.label_tag }}
+                        <div class="campo-com-unidade">
+                            {{ form.custo }}
+                            <span>R$</span>
+                        </div>
+                        {{ form.custo.errors }}
                     </div>
-                    {{ form.valor_esperado.errors }}
+
+                    <div class="venda-campo">
+                        {{ form.valor_esperado.label_tag }}
+                        <div class="campo-com-unidade">
+                            {{ form.valor_esperado }}
+                            <span>R$</span>
+                        </div>
+                        {{ form.valor_esperado.errors }}
+                    </div>
                 </div>
             </div>
 
