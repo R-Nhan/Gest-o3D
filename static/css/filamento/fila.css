@@ -35,9 +35,9 @@
 .fila-item {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
     align-items: center;
-    gap: 24px;
+    gap: 12px;
     padding: 15px 18px;
     background: var(--superficie-fila);
     border: 1px solid var(--borda-fila);
@@ -119,6 +119,7 @@
 
 .fila-detalhes {
     display: flex;
+    flex-direction: column;
     gap: 18px;
 }
 
@@ -147,6 +148,61 @@
     background: #e64d00;
 }
 
+.fila-item .fila-botao-pronto {
+    background: #2e9d58;
+}
+
+.fila-item .fila-botao-pronto:hover {
+    background: #267d46;
+}
+
+.fila-form-excluir {
+    margin: 0;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    padding-right: 12px;
+    border-right: 1px solid var(--borda-fila);
+}
+
+.fila-botao-excluir {
+    position: relative;
+    width: 20px;
+    height: 22px;
+    padding: 0 !important;
+    color: #e53935 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+.fila-botao-excluir::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    width: 8px;
+    height: 10px;
+    border: 1px solid currentColor;
+    border-top: 0;
+    border-radius: 0 0 1px 1px;
+}
+
+.fila-botao-excluir::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 4px;
+    width: 12px;
+    height: 1px;
+    background: currentColor;
+    box-shadow: 3px -2px 0 -0.25px currentColor;
+}
+
+.fila-botao-excluir:hover {
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
 .fila-separador {
     margin: 30px 0;
     border-top: 1px solid var(--borda-fila);
@@ -172,11 +228,21 @@
     }
 
     .fila-detalhes {
-        grid-column: 1 / -1;
+        grid-column: 2;
         grid-row: 2;
     }
 
     .fila-item form {
+        grid-column: 2;
+        grid-row: 3;
+    }
+
+    .fila-form-excluir {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .fila-item > div:not(.fila-detalhes) {
         grid-column: 2;
         grid-row: 1;
     }

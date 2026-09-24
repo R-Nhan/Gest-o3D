@@ -93,6 +93,14 @@
 
         <h2 class="informar-venda-titulo">Registrar Venda</h2>
 
+        {% if messages %}
+        <div class="venda-mensagens" aria-live="polite">
+            {% for message in messages %}
+            <p class="venda-mensagem venda-mensagem-{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <form class="venda-form" method="post">
             {% csrf_token %}
 
@@ -105,6 +113,11 @@
                     <div class="campo-com-unidade">
                         {{ field }}
                         <span>g</span>
+                    </div>
+                    {% elif field.name == 'tamanho' %}
+                    <div class="campo-com-unidade">
+                        {{ field }}
+                        <span>cm</span>
                     </div>
                     {% else %}
                     {{ field }}

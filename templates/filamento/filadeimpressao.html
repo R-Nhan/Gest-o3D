@@ -19,9 +19,15 @@
                 <div class="fila-itens">
                     {% for venda in vendas_executando %}
                     <article class="fila-item">
+                        <form class="fila-form-excluir" method="post" onsubmit="return confirm('Excluir esta venda?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="venda_id" value="{{ venda.id }}">
+                            <input type="hidden" name="action" value="excluir">
+                            <button class="fila-botao-excluir" type="submit" aria-label="Excluir venda" title="Excluir venda"></button>
+                        </form>
                         <div>
                             <strong>{{ venda.produto }}</strong>
-                            <span>{{ venda.cliente }}</span>
+                            <span>Cliente: {{ venda.cliente }}</span>
                             {% if venda.link %}
                             <a class="fila-link-venda" href="{{ venda.link }}" target="_blank" rel="noopener noreferrer">
                                 Acessar venda
@@ -35,7 +41,16 @@
                         <div class="fila-detalhes">
                             <span>{{ venda.quantidade }} unidade{{ venda.quantidade|pluralize }}</span>
                             <span>{{ venda.peso }} g</span>
+                            {% if venda.tamanho %}
+                            <span>Tamanho: {% if venda.tamanho == '0' or venda.tamanho == '0.0' or venda.tamanho == '0.00' %}Padrão{% elif 'cm' in venda.tamanho|lower %}{{ venda.tamanho }}{% else %}{{ venda.tamanho }} cm{% endif %}</span>
+                            {% endif %}
                         </div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="venda_id" value="{{ venda.id }}">
+                            <input type="hidden" name="action" value="pronto">
+                            <button class="fila-botao-pronto" type="submit">Pronto</button>
+                        </form>
                     </article>
                     {% empty %}
                     <p class="fila-vazia">Nenhuma impressão em execução.</p>
@@ -50,9 +65,15 @@
                 <div class="fila-itens">
                     {% for venda in vendas_em_espera %}
                     <article class="fila-item">
+                        <form class="fila-form-excluir" method="post" onsubmit="return confirm('Excluir esta venda?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="venda_id" value="{{ venda.id }}">
+                            <input type="hidden" name="action" value="excluir">
+                            <button class="fila-botao-excluir" type="submit" aria-label="Excluir venda" title="Excluir venda"></button>
+                        </form>
                         <div>
                             <strong>{{ venda.produto }}</strong>
-                            <span>{{ venda.cliente }}</span>
+                            <span>Cliente: {{ venda.cliente }}</span>
                             {% if venda.link %}
                             <a class="fila-link-venda" href="{{ venda.link }}" target="_blank" rel="noopener noreferrer">
                                 Acessar venda
@@ -66,6 +87,9 @@
                         <div class="fila-detalhes">
                             <span>{{ venda.quantidade }} unidade{{ venda.quantidade|pluralize }}</span>
                             <span>{{ venda.peso }} g</span>
+                            {% if venda.tamanho %}
+                            <span>Tamanho: {% if venda.tamanho == '0' or venda.tamanho == '0.0' or venda.tamanho == '0.00' %}Padrão{% elif 'cm' in venda.tamanho|lower %}{{ venda.tamanho }}{% else %}{{ venda.tamanho }} cm{% endif %}</span>
+                            {% endif %}
                         </div>
                         <form method="post">
                             {% csrf_token %}
