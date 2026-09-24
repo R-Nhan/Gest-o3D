@@ -449,6 +449,76 @@
     font-size: 13px;
 }
 
+.fila-modal[hidden] {
+    display: none;
+}
+
+.fila-modal {
+    position: fixed;
+    z-index: 20;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.fila-modal-conteudo {
+    width: min(100%, 390px);
+    padding: 24px;
+    background: var(--superficie-fila);
+    border: 1px solid var(--destaque-fila);
+    border-radius: 6px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+
+.fila-modal-conteudo h2 {
+    margin: 0;
+    color: var(--texto-fila);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.fila-modal-conteudo p {
+    margin: 8px 0 22px;
+    color: var(--texto-suave-fila);
+    font-size: 13px;
+}
+
+.fila-modal-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.fila-modal-acoes button {
+    padding: 9px 14px;
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.fila-modal-cancelar {
+    color: var(--texto-fila);
+    background: var(--borda-fila);
+}
+
+.fila-modal-cancelar:hover {
+    background: #383a42;
+}
+
+.fila-modal-confirmar {
+    color: #ffffff;
+    background: var(--destaque-fila);
+}
+
+.fila-modal-confirmar:hover {
+    background: #e64d00;
+}
+
 @media (max-width: 600px) {
     .fila-pagina {
         width: min(100% - 28px, 1000px);

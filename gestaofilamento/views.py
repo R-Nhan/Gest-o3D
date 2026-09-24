@@ -4,13 +4,78 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Avg, Count, DecimalField, IntegerField, Sum
+from django.db.models.functions import Coalesce
 from .forms import VendaForm
 from .models import Venda
 
 
 @login_required
 def dashboard(request):
-    return render(request, 'filamento/dashboard.html')
+    vendas = Venda.objects.all()
+    vendas_entregues = vendas.filter(fila='entregue')
+    resumo = vendas.aggregate(
+        quantidade_vendas=Count('id'),
+        quantidade_pecas=Coalesce(
+            Sum('quantidade'),
+            0,
+            output_field=IntegerField(),
+        ),
+        filamento_gramas=Coalesce(
+            Sum('peso'),
+            Decimal('0'),
+            output_field=DecimalField(max_digits=12, decimal_places=2),
+        ),
+    )
+    financeiro = vendas_entregues.aggregate(
+        faturamento=Coalesce(
+            Sum('valor'),
+            Decimal('0'),
+            output_field=DecimalField(max_digits=12, decimal_places=2),
+        ),
+        custo_total=Coalesce(
+            Sum('custo'),
+            Decimal('0'),
+            output_field=DecimalField(max_digits=12, decimal_places=2),
+        ),
+        lucro_bruto=Coalesce(
+            Sum('lucro'),
+            Decimal('0'),
+            output_field=DecimalField(max_digits=12, decimal_places=2),
+        ),
+        lucro_medio=Coalesce(
+            Avg('lucro'),
+            Decimal('0'),
+            output_field=DecimalField(max_digits=12, decimal_places=2),
+        ),
+    )
+
+    quantidade_entregues = vendas_entregues.count()
+    fila_resumo = {
+        'espera': vendas.filter(fila='espera').count(),
+        'executando': vendas.filter(fila='executando').count(),
+        'pronto': vendas.filter(fila='pronto').count(),
+        'entregue': quantidade_entregues,
+    }
+    nomes_pagamento = dict(Venda.PAGAMENTO_CHOICES)
+    pagamentos = [
+        {
+            'nome': nomes_pagamento.get(item['pagamento'], item['pagamento']),
+            'total': item['total'],
+        }
+        for item in vendas_entregues.values('pagamento').annotate(total=Count('id')).order_by('-total')
+    ]
+
+    context = {
+        **resumo,
+        **financeiro,
+        'lucro_liquido': financeiro['lucro_bruto'],
+        'quantidade_entregues': quantidade_entregues,
+        'fila_resumo': fila_resumo,
+        'pagamentos': pagamentos,
+        'ultimas_vendas': vendas.order_by('-data')[:5],
+    }
+    return render(request, 'filamento/dashboard.html', context)
 
 
 @login_required

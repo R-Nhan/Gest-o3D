@@ -1,15 +1,127 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dashboard</title>
+    <title>Dashboard de Filamento</title>
+    <link rel="stylesheet" href="{% static 'css/filamento/dashboard.css' %}">
 </head>
 <body>
     {% include "utilitys/sidebar.html" %}
     <main class="page-content">
         {% block content %}
-        <h1>dashboard</h1>
+        <section class="dashboard-pagina">
+            <header class="dashboard-cabecalho">
+                <div>
+                    <p class="dashboard-eyebrow">Visão geral</p>
+                    <h1>Dashboard de filamento</h1>
+                    <p class="dashboard-subtitulo">Acompanhe vendas, produção e rentabilidade em um só lugar.</p>
+                </div>
+                <a class="dashboard-acao" href="{% url 'vender' %}">+ Registrar venda</a>
+            </header>
+
+            <section class="dashboard-grade dashboard-grade-principal" aria-label="Resumo financeiro">
+                <article class="dashboard-card dashboard-card-destaque">
+                    <span class="dashboard-card-rotulo">Faturamento recebido</span>
+                    <strong>R$ {{ faturamento|floatformat:2 }}</strong>
+                    <small>{{ quantidade_entregues }} venda{{ quantidade_entregues|pluralize }} entregue{{ quantidade_entregues|pluralize }}</small>
+                </article>
+                <article class="dashboard-card dashboard-card-laranja">
+                    <span class="dashboard-card-rotulo">Lucro bruto</span>
+                    <strong>R$ {{ lucro_bruto|floatformat:2 }}</strong>
+                    <small>Receita menos custos registrados</small>
+                </article>
+                <article class="dashboard-card dashboard-card-verde">
+                    <span class="dashboard-card-rotulo">Lucro limpo</span>
+                    <strong>R$ {{ lucro_liquido|floatformat:2 }}</strong>
+                    <small>Sem despesas extras cadastradas</small>
+                </article>
+                <article class="dashboard-card">
+                    <span class="dashboard-card-rotulo">Média de lucro por venda</span>
+                    <strong>R$ {{ lucro_medio|floatformat:2 }}</strong>
+                    <small>Considerando pedidos entregues</small>
+                </article>
+            </section>
+
+            <section class="dashboard-grade dashboard-grade-indicadores" aria-label="Indicadores de produção">
+                <article class="dashboard-card dashboard-indicador">
+                    <span class="dashboard-icone dashboard-icone-laranja">R$</span>
+                    <div><small>Total de vendas</small><strong>{{ quantidade_vendas }}</strong></div>
+                </article>
+                <article class="dashboard-card dashboard-indicador">
+                    <span class="dashboard-icone dashboard-icone-azul">#</span>
+                    <div><small>Peças registradas</small><strong>{{ quantidade_pecas }}</strong></div>
+                </article>
+                <article class="dashboard-card dashboard-indicador">
+                    <span class="dashboard-icone dashboard-icone-verde">g</span>
+                    <div><small>Filamento consumido</small><strong>{{ filamento_gramas|floatformat:2 }} g</strong></div>
+                </article>
+                <article class="dashboard-card dashboard-indicador">
+                    <span class="dashboard-icone dashboard-icone-cinza">h</span>
+                    <div><small>Horas de impressão</small><strong>Não registrado</strong></div>
+                </article>
+            </section>
+
+            <section class="dashboard-layout">
+                <article class="dashboard-panel">
+                    <div class="dashboard-panel-cabecalho">
+                        <div><p class="dashboard-eyebrow">Produção</p><h2>Status da fila</h2></div>
+                        <a href="{% url 'fila' %}">Abrir fila</a>
+                    </div>
+                    <div class="dashboard-status-lista">
+                        <div><span><i class="status-ponto status-espera"></i>Em espera</span><strong>{{ fila_resumo.espera }}</strong></div>
+                        <div><span><i class="status-ponto status-executando"></i>Imprimindo</span><strong>{{ fila_resumo.executando }}</strong></div>
+                        <div><span><i class="status-ponto status-pronto"></i>Prontos para entrega</span><strong>{{ fila_resumo.pronto }}</strong></div>
+                        <div><span><i class="status-ponto status-entregue"></i>Entregues</span><strong>{{ fila_resumo.entregue }}</strong></div>
+                    </div>
+                </article>
+
+                <article class="dashboard-panel">
+                    <div class="dashboard-panel-cabecalho">
+                        <div><p class="dashboard-eyebrow">Recebimentos</p><h2>Formas de pagamento</h2></div>
+                        <a href="{% url 'concluido' %}">Ver pedidos</a>
+                    </div>
+                    {% if pagamentos %}
+                    <div class="dashboard-pagamentos">
+                        {% for pagamento in pagamentos %}
+                        <div><span>{{ pagamento.nome }}</span><strong>{{ pagamento.total }}</strong></div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="dashboard-vazio">Ainda não há pagamentos registrados.</p>
+                    {% endif %}
+                </article>
+            </section>
+
+            <section class="dashboard-panel dashboard-panel-ultimas">
+                <div class="dashboard-panel-cabecalho">
+                    <div><p class="dashboard-eyebrow">Atividade recente</p><h2>Últimas vendas</h2></div>
+                    <a href="{% url 'vender' %}">Nova venda</a>
+                </div>
+                {% if ultimas_vendas %}
+                <div class="dashboard-tabela-wrap">
+                    <table class="dashboard-tabela">
+                        <thead><tr><th>Produto</th><th>Cliente</th><th>Quantidade</th><th>Peso</th><th>Fila</th><th>Valor</th></tr></thead>
+                        <tbody>
+                            {% for venda in ultimas_vendas %}
+                            <tr>
+                                <td><strong>{{ venda.produto }}</strong></td>
+                                <td>{{ venda.cliente }}</td>
+                                <td>{{ venda.quantidade }}</td>
+                                <td>{{ venda.peso|floatformat:2 }} g</td>
+                                <td><span class="dashboard-badge dashboard-badge-{{ venda.fila }}">{{ venda.get_fila_display }}</span></td>
+                                <td>R$ {{ venda.valor|floatformat:2 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="dashboard-vazio">Registre sua primeira venda para começar a acompanhar os resultados.</p>
+                {% endif %}
+            </section>
+        </section>
         {% endblock %}
     </main>
 </body>

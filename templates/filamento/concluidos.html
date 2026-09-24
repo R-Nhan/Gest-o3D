@@ -19,7 +19,7 @@
                 <div class="fila-itens">
                     {% for venda in vendas_concluidas %}
                     <article class="fila-item fila-item-entregue">
-                        <form class="fila-form-excluir" method="post" onsubmit="return confirm('Excluir esta venda?');">
+                        <form class="fila-form-excluir" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="venda_id" value="{{ venda.id }}">
                             <input type="hidden" name="action" value="excluir">
@@ -85,7 +85,7 @@
                 <div class="fila-itens">
                     {% for venda in vendas_entregues %}
                     <article class="fila-item">
-                        <form class="fila-form-excluir" method="post" onsubmit="return confirm('Excluir esta venda?');">
+                        <form class="fila-form-excluir" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="venda_id" value="{{ venda.id }}">
                             <input type="hidden" name="action" value="excluir">
@@ -127,7 +127,56 @@
         </section>
         {% endblock %}
     </main>
+    <div class="fila-modal" id="modal-excluir" role="dialog" aria-modal="true" aria-labelledby="modal-excluir-titulo" hidden>
+        <div class="fila-modal-conteudo">
+            <h2 id="modal-excluir-titulo">Excluir venda?</h2>
+            <p>Essa ação não pode ser desfeita.</p>
+            <div class="fila-modal-acoes">
+                <button class="fila-modal-cancelar" type="button">Cancelar</button>
+                <button class="fila-modal-confirmar" type="button">Excluir</button>
+            </div>
+        </div>
+    </div>
     <script>
+        const modalExcluir = document.querySelector('#modal-excluir');
+        const botaoCancelarExclusao = modalExcluir.querySelector('.fila-modal-cancelar');
+        const botaoConfirmarExclusao = modalExcluir.querySelector('.fila-modal-confirmar');
+        let formularioExclusaoAtual;
+
+        function fecharModalExclusao() {
+            modalExcluir.hidden = true;
+            formularioExclusaoAtual = null;
+        }
+
+        document.querySelectorAll('.fila-form-excluir').forEach(function (formulario) {
+            formulario.addEventListener('submit', function (evento) {
+                evento.preventDefault();
+                formularioExclusaoAtual = formulario;
+                modalExcluir.hidden = false;
+                botaoCancelarExclusao.focus();
+            });
+        });
+
+        botaoCancelarExclusao.addEventListener('click', fecharModalExclusao);
+
+        botaoConfirmarExclusao.addEventListener('click', function () {
+            if (formularioExclusaoAtual) {
+                formularioExclusaoAtual.submit();
+            }
+        });
+
+        modalExcluir.addEventListener('click', function (evento) {
+            if (evento.target === modalExcluir) {
+                fecharModalExclusao();
+            }
+        });
+
+        document.addEventListener('keydown', function (evento) {
+            if (evento.key === 'Escape' && !modalExcluir.hidden) {
+                fecharModalExclusao();
+            }
+        });
+
         document.querySelectorAll('.fila-entrega, .fila-informacoes').forEach(function (painel) {
             const resumo = painel.querySelector('summary');
             const conteudo = painel.querySelector('.fila-form-entrega, .fila-detalhes-informacoes');
