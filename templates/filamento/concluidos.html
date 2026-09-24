@@ -14,39 +14,174 @@
         <section class="fila-pagina">
             <h1>Concluídos</h1>
 
-            <div class="fila-itens">
-                {% for venda in vendas_concluidas %}
-                <article class="fila-item">
-                    <form class="fila-form-excluir" method="post" onsubmit="return confirm('Excluir esta venda?');">
-                        {% csrf_token %}
-                        <input type="hidden" name="venda_id" value="{{ venda.id }}">
-                        <input type="hidden" name="action" value="excluir">
-                        <button class="fila-botao-excluir" type="submit" aria-label="Excluir venda" title="Excluir venda"></button>
-                    </form>
-                    <div>
-                        <strong>{{ venda.produto }}</strong>
-                        <span>Cliente: {{ venda.cliente }}</span>
-                        {% if venda.link %}
-                        <a class="fila-link-venda" href="{{ venda.link }}" target="_blank" rel="noopener noreferrer">
-                            Acessar venda
-                        </a>
-                        {% endif %}
-                    </div>
+            <section class="fila-secao">
+                <h2>Prontos Para Entrega</h2>
+                <div class="fila-itens">
+                    {% for venda in vendas_concluidas %}
+                    <article class="fila-item fila-item-entregue">
+                        <form class="fila-form-excluir" method="post" onsubmit="return confirm('Excluir esta venda?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="venda_id" value="{{ venda.id }}">
+                            <input type="hidden" name="action" value="excluir">
+                            <button class="fila-botao-excluir" type="submit" aria-label="Excluir venda" title="Excluir venda"></button>
+                        </form>
+                        <div>
+                            <strong>{{ venda.produto }}</strong>
+                            <span>Cliente: {{ venda.cliente }}</span>
+                            {% if venda.link %}
+                            <a class="fila-link-venda" href="{{ venda.link }}" target="_blank" rel="noopener noreferrer">Acessar venda</a>
+                            {% endif %}
+                        </div>
+                        <div class="fila-detalhes">
+                            <span>{{ venda.quantidade }} unidade{{ venda.quantidade|pluralize }}</span>
+                            <span>{{ venda.peso }} g</span>
+                            {% if venda.tamanho %}
+                            <span>Tamanho: {% if venda.tamanho == '0' or venda.tamanho == '0.0' or venda.tamanho == '0.00' %}Padrão{% elif 'cm' in venda.tamanho|lower %}{{ venda.tamanho }}{% else %}{{ venda.tamanho }} cm{% endif %}</span>
+                            {% endif %}
+                        </div>
+                        <details class="fila-entrega">
+                            <summary aria-label="Abrir ou fechar entrega">Entregar</summary>
+                            <form class="fila-form-entrega" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="venda_id" value="{{ venda.id }}">
+                                <input type="hidden" name="action" value="entregar">
+                                <div class="fila-campo-entrega">
+                                    <label for="pagamento-{{ venda.id }}">Forma de pagamento</label>
+                                    <select id="pagamento-{{ venda.id }}" name="pagamento">
+                                        <option value="pix">PIX</option>
+                                        <option value="dinheiro">Dinheiro</option>
+                                        <option value="cartao_credito">Cartão de crédito</option>
+                                        <option value="cartao_debito">Cartão de débito</option>
+                                        <option value="pendente">Pendente</option>
+                                    </select>
+                                </div>
+                                <div class="fila-campo-entrega">
+                                    <label for="valor-esperado-{{ venda.id }}">Valor esperado</label>
+                                    <input id="valor-esperado-{{ venda.id }}" name="valor_esperado" type="number" min="0" step="0.01" value="{{ venda.valor_esperado|default:'0.00' }}" readonly aria-readonly="true">
+                                </div>
+                                <div class="fila-campo-entrega">
+                                    <label for="custo-{{ venda.id }}">Custo</label>
+                                    <input id="custo-{{ venda.id }}" name="custo" type="number" min="0" step="0.01" value="{{ venda.custo|default:'0.00' }}" readonly aria-readonly="true">
+                                </div>
+                                <div class="fila-campo-entrega">
+                                    <label for="valor-{{ venda.id }}">Valor vendido</label>
+                                    <input class="fila-valor-vendido" id="valor-{{ venda.id }}" name="valor" type="number" min="0" step="0.01" value="{{ venda.valor|default:'0.00' }}" required>
+                                </div>
+                                <p class="fila-lucro-preview">Lucro: <strong data-lucro>R$ 0,00</strong> (<strong data-lucro-percentual>0,00%</strong>)</p>
+                                <button type="submit">Confirmar entrega</button>
+                            </form>
+                        </details>
+                    </article>
+                    {% empty %}
+                    <p class="fila-vazia">Nenhum pedido pronto para entrega.</p>
+                    {% endfor %}
+                </div>
+            </section>
 
-                    <div class="fila-detalhes">
-                        <span>{{ venda.quantidade }} unidade{{ venda.quantidade|pluralize }}</span>
-                        <span>{{ venda.peso }} g</span>
-                        {% if venda.tamanho %}
-                        <span>Tamanho: {% if venda.tamanho == '0' or venda.tamanho == '0.0' or venda.tamanho == '0.00' %}Padrão{% elif 'cm' in venda.tamanho|lower %}{{ venda.tamanho }}{% else %}{{ venda.tamanho }} cm{% endif %}</span>
-                        {% endif %}
-                    </div>
-                </article>
-                {% empty %}
-                <p class="fila-vazia">Nenhuma venda concluída.</p>
-                {% endfor %}
-            </div>
+            <div class="fila-separador"></div>
+
+            <section class="fila-secao">
+                <h2>Pedidos Concluídos e Entregues</h2>
+                <div class="fila-itens">
+                    {% for venda in vendas_entregues %}
+                    <article class="fila-item">
+                        <form class="fila-form-excluir" method="post" onsubmit="return confirm('Excluir esta venda?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="venda_id" value="{{ venda.id }}">
+                            <input type="hidden" name="action" value="excluir">
+                            <button class="fila-botao-excluir" type="submit" aria-label="Excluir venda" title="Excluir venda"></button>
+                        </form>
+                        <div class="fila-item-cabecalho">
+                            <div>
+                                <strong>{{ venda.produto }}</strong>
+                                <span>Cliente: {{ venda.cliente }}</span>
+                            </div>
+                        </div>
+                        <details class="fila-informacoes">
+                            <summary aria-label="Abrir ou fechar informações">Informações</summary>
+                            <div class="fila-detalhes fila-detalhes-informacoes">
+                                <strong>Produto: {{ venda.produto }}</strong>
+                                <span>Cliente: {{ venda.cliente }}</span>
+                                <span>Quantidade: {{ venda.quantidade }} unidade{{ venda.quantidade|pluralize }}</span>
+                                <span>Peso: {{ venda.peso }} g</span>
+                                <span>Valor vendido: R$ {{ venda.valor }}</span>
+                                <span>Valor esperado: R$ {{ venda.valor_esperado }}</span>
+                                <span>Custo: R$ {{ venda.custo }}</span>
+                                <span>Lucro: R$ {{ venda.lucro }}</span>
+                                <span>Lucro percentual: {{ venda.lucro_percentual }}%</span>
+                                <span>Forma de pagamento: {{ venda.get_pagamento_display }}</span>
+                                {% if venda.tamanho %}
+                                <span>Tamanho: {% if venda.tamanho == '0' or venda.tamanho == '0.0' or venda.tamanho == '0.00' %}Padrão{% elif 'cm' in venda.tamanho|lower %}{{ venda.tamanho }}{% else %}{{ venda.tamanho }} cm{% endif %}</span>
+                                {% endif %}
+                                {% if venda.link %}
+                                <a class="fila-link-venda" href="{{ venda.link }}" target="_blank" rel="noopener noreferrer">Acessar venda</a>
+                                {% endif %}
+                            </div>
+                        </details>
+                    </article>
+                    {% empty %}
+                    <p class="fila-vazia">Nenhum pedido entregue.</p>
+                    {% endfor %}
+                </div>
+            </section>
         </section>
         {% endblock %}
     </main>
+    <script>
+        document.querySelectorAll('.fila-entrega, .fila-informacoes').forEach(function (painel) {
+            const resumo = painel.querySelector('summary');
+            const conteudo = painel.querySelector('.fila-form-entrega, .fila-detalhes-informacoes');
+            let fechando = false;
+
+            resumo.addEventListener('click', function (evento) {
+                evento.preventDefault();
+
+                if (fechando) {
+                    return;
+                }
+
+                if (painel.open) {
+                    fechando = true;
+                    painel.classList.add('fechando');
+                    conteudo.addEventListener('transitionend', function fechar() {
+                        conteudo.removeEventListener('transitionend', fechar);
+                        painel.open = false;
+                        painel.classList.remove('fechando');
+                        fechando = false;
+                    });
+                    return;
+                }
+
+                painel.open = true;
+                requestAnimationFrame(function () {
+                    painel.classList.remove('fechando');
+                });
+            });
+        });
+
+        document.querySelectorAll('.fila-form-entrega').forEach(function (form) {
+            const custo = form.querySelector('[name="custo"]');
+            const valor = form.querySelector('[name="valor"]');
+            const lucro = form.querySelector('[data-lucro]');
+            const lucroPercentual = form.querySelector('[data-lucro-percentual]');
+
+            function atualizarLucro() {
+                const custoAtual = Number(custo.value) || 0;
+                const resultado = (Number(valor.value) || 0) - custoAtual;
+                const percentual = custoAtual ? (resultado / custoAtual) * 100 : 0;
+                lucro.textContent = resultado.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
+                lucroPercentual.textContent = percentual.toLocaleString('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }) + '%';
+            }
+
+            valor.addEventListener('input', atualizarLucro);
+            atualizarLucro();
+        });
+    </script>
 </body>
 </html>
