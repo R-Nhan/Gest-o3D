@@ -94,8 +94,10 @@
     color: #777;
 }
 
-.campo input:focus {
-    border-color: var(--destaque);
+.campo input:hover,
+.campo input:focus,
+.campo input.preenchido {
+    border-color: #ffffff;
 }
 
 
@@ -301,10 +303,16 @@
     resize: vertical;
 }
 
+.venda-form input:hover,
 .venda-form input:focus,
+.venda-form textarea:hover,
 .venda-form textarea:focus,
-.venda-form select:focus {
-    border-color: var(--destaque);
+.venda-form select:hover,
+.venda-form select:focus,
+.venda-form input.preenchido,
+.venda-form textarea.preenchido,
+.venda-form select.preenchido {
+    border-color: #ffffff;
 }
 
 .venda-form .helptext,
@@ -389,6 +397,50 @@
 
     .venda-campo-observacao {
         grid-column: auto;
+    }
+
+    .calculadora-custos {
+        padding: 18px 0 0;
+    }
+
+    .informar-venda-titulo {
+        margin-top: 18px;
+        font-size: 18px;
+    }
+
+    .calculadora-descricao {
+        margin-bottom: 14px !important;
+    }
+
+    .valor-sugerido {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+        padding: 13px 14px;
+    }
+
+    .valor-sugerido strong {
+        font-size: 20px;
+    }
+
+    .venda-form {
+        margin-top: 14px;
+    }
+
+    .venda-form p {
+        grid-template-columns: 1fr;
+        gap: 5px;
+        margin-bottom: 12px;
+    }
+
+    .venda-campo-valores {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding-top: 12px;
+    }
+
+    .venda-form-botao {
+        margin-top: 4px;
     }
 
 }

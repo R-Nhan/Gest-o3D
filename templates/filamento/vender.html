@@ -251,6 +251,23 @@
                     dinheiro(valorVenda);
             }
 
+            function atualizarEstadoDosCampos() {
+                document.querySelectorAll(
+                    ".campo input, .venda-form input, .venda-form textarea, .venda-form select"
+                ).forEach((campo) => {
+                    campo.classList.toggle("preenchido", campo.value.trim() !== "");
+                });
+            }
+
+            document.querySelectorAll(
+                ".campo input, .venda-form input, .venda-form textarea, .venda-form select"
+            ).forEach((campo) => {
+                campo.addEventListener("input", atualizarEstadoDosCampos);
+                campo.addEventListener("change", atualizarEstadoDosCampos);
+            });
+
+            atualizarEstadoDosCampos();
+
 
             // Atualizar automaticamente
 
