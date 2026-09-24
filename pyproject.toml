@@ -1,5 +1,12 @@
 [project]
+name = "gestao3d"
+version = "0.1.0"
+description = "Sistema de gestão de impressão 3D"
+requires-python = ">=3.12"
+
 dependencies = [
     "Django",
     "python-dotenv",
+    "dj-database-url",
+    "psycopg[binary]",
 ]
